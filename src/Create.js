@@ -7,6 +7,7 @@ const Create = () => {
     const [body, setBody] = useState('');
     const [author, setAuthor] = useState('Dennis Fisco');
     const [isPending, setIsPending]= useState(false);
+    const [error, setError] = useState(null);
 
     //form submit function
     const handleSubmit= (e)=>{
@@ -14,20 +15,31 @@ const Create = () => {
         const blog = {title, body, author};
 
         setIsPending(true);
+        setError(null);
+        
 
         fetch('http://localhost:8000/blogs', {
             method: "POST",
             headers:{"Content-Type":"application/json"},
             body: JSON.stringify(blog)
-        }).then(()=>{
+
+        }).then((res)=>{
+            if (!res.ok) {
+                throw Error("could not add data to server");
+
+            }}).then(()=>{
                 setIsPending(false);
                 history.push('/');
-        });
+            }).catch((err)=>{
+                setError("Failed to add data to server");
+                setIsPending(false)
+            });
     }
     
     return (  
         <div className="create">
             <h2>Add a new Blog</h2>
+            <div>{error}</div>
             <form onSubmit={handleSubmit}>
                 <label>Blog Title</label>
                 <input 
@@ -55,6 +67,7 @@ const Create = () => {
                 </select>
                 {!isPending && <button>Add Blog</button>}
                 {isPending && <button disabled>Adding Post...</button>}
+               
              
             </form>
            

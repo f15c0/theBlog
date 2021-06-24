@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route  } from "react-router-dom";
 import Create from "./Create";
 import BlogDetails from './BlogDetails';
 import NotFound from './404';
+import Category from './Category';
 
 function App() {
   // const likes = 150;
@@ -25,6 +26,9 @@ function App() {
             </Route>
             <Route path="/blogs/:id">
               <BlogDetails/>
+            </Route>
+            <Route path="/category">
+              <Category/>
             </Route>
             <Route path="*">
               <NotFound/>
